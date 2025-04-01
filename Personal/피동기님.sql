@@ -85,21 +85,6 @@ exception
 end;
 /
 
--- cursor: 오라클에서 쿼리 결과로 얻어진 여러 데이터(행)의 위치 정보
-declare
-    cursor emp_cursor is select * from employee where dno=20;
-    emp_buf employee % rowtype;
-begin
-    open emp_cursor;
-    loop
-        fetch emp_cursor into emp_buf;
-        exit when emp_cursor % notfound;
-        dbms_output.put_line(emp_buf.eno || ':' || emp_buf.ename);
-    end loop;
-    close emp_cursor;
-end;
-/
-
 -- cursor 간결한 표현 book_row도 
 declare
 begin
