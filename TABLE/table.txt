@@ -1,301 +1,306 @@
-drop table bk_cate CASCADE CONSTRAINTS purge;
-drop table book CASCADE CONSTRAINTS purge;
-drop table cart CASCADE CONSTRAINTS purge;
-drop table cart_item CASCADE CONSTRAINTS purge;
-drop table membership CASCADE CONSTRAINTS purge;
-drop table order_item CASCADE CONSTRAINTS purge;
- drop table orders CASCADE CONSTRAINTS purge;
-drop table product CASCADE CONSTRAINTS purge;
-drop table review CASCADE CONSTRAINTS purge;
-drop table review_comment CASCADE CONSTRAINTS purge;
-drop table sup_cate CASCADE CONSTRAINTS purge;
-drop table supplies CASCADE CONSTRAINTS purge;
-drop table user_info CASCADE CONSTRAINTS purge;
-drop table payment CASCADE CONSTRAINTS purge;
+DROP TABLE "USER_INFO" CASCADE CONSTRAINTS;
+DROP TABLE "MEMBERSHIP" CASCADE CONSTRAINTS;
+DROP TABLE "BK_CATE" CASCADE CONSTRAINTS;
+DROP TABLE "BOOK" CASCADE CONSTRAINTS;
+DROP TABLE "SUP_CATE" CASCADE CONSTRAINTS;
+DROP TABLE "SUPPLIES" CASCADE CONSTRAINTS;
+DROP TABLE "PRODUCT" CASCADE CONSTRAINTS;
+DROP TABLE "CART" CASCADE CONSTRAINTS;
+DROP TABLE "CART_ITEM" CASCADE CONSTRAINTS;
+DROP TABLE "ORDERS" CASCADE CONSTRAINTS;
+DROP TABLE "ORDER_ITEM" CASCADE CONSTRAINTS;
+DROP TABLE "PAYMENT" CASCADE CONSTRAINTS;
+DROP TABLE review CASCADE CONSTRAINTS;
+DROP TABLE review_comment CASCADE CONSTRAINTS;
 
-
-
-DROP TABLE sup_cate;
-
-CREATE TABLE sup_cate (
-	cate_id	number		NOT NULL,
-	cate	varchar2(50)		NULL
+-- 테이블 생성
+CREATE TABLE membership (
+                            grade VARCHAR2(50) PRIMARY KEY,
+                            mem_disc VARCHAR2(10)
 );
-
-DROP TABLE review_comment;
-
-CREATE TABLE review_comment (
-	cmt_id	varchar2(50)		NOT NULL,
-	u_id	varchar2(50)		NOT NULL,
-	re_num	number		NOT NULL,
-	cmt_body	varchar2(255)		NULL,
-	cmt_date	date		NULL
-);
-
-DROP TABLE book;
-
-CREATE TABLE book (
-	bk_id	varchar2(50)		NOT NULL,
-	cate_id	number		NOT NULL,
-	bk_name	varchar2(50)		NOT NULL,
-	bk_price	number		NOT NULL,
-	bk_quantity	number		NOT NULL,
-	bk_author	varchar2(50)		NOT NULL,
-	bk_pub	varchar2(50)		NOT NULL,
-	bk_published	varchar2(50)		NOT NULL
-);
-
-DROP TABLE order_item;
-
-CREATE TABLE order_item (
-	order_item_id	NUMBER		NOT NULL,
-	quantity	NUMBER		NULL,
-	cart_item_id	NUMBER		NOT NULL,
-	order_id	NUMBER		NOT NULL
-);
-
-DROP TABLE cart;
-
-CREATE TABLE cart (
-	cart_id	NUMBER		NOT NULL,
-	u_id	varchar2(50)		NOT NULL
-);
-
-DROP TABLE user_info;
 
 CREATE TABLE user_info (
-	u_id	varchar2(50)		NOT NULL,
-	u_name	varchar2(50)		NULL,
-	u_login	varchar2(50)		NULL,
-	u_pw	varchar2(50)		NULL,
-	u_mail	varchar2(50)		NULL,
-	u_addr	varchar2(255)		NULL,
-	grade	varchar2(50)		NOT NULL
+                           u_id VARCHAR2(50) PRIMARY KEY,
+                           u_name VARCHAR2(50),
+                           u_login VARCHAR2(50),
+                           u_pw VARCHAR2(50),
+                           u_mail VARCHAR2(50),
+                           u_addr VARCHAR2(255),
+                           grade VARCHAR2(50) NOT NULL,
+                           FOREIGN KEY (grade) REFERENCES membership(grade)
 );
-
-DROP TABLE product;
-
-CREATE TABLE product (
-	pro_id	varchar2(50)		NOT NULL,
-	sup_id	varchar2(50)		NULL,
-	bk_id	varchar2(50)		NULL,
-	pro_grade	number(5,2)		NULL
-);
-
-DROP TABLE orders;
-
-CREATE TABLE orders (
-	order_id	NUMBER		NOT NULL,
-	u_id	varchar2(50)		NOT NULL,
-	order_status	VARCHAR2(50)		NULL,
-	quantity	NUMBER		NULL
-);
-
-DROP TABLE review;
-
-CREATE TABLE review (
-	re_num	number		NOT NULL,
-	pro_id	varchar2(50)		NOT NULL,
-	u_id	varchar2(50)		NOT NULL,
-	re_title	varchar2(50)		NULL,
-	re_body	varchar2(255)		NULL,
-	re_grade	number(5)		NULL,
-	re_date	date		NULL
-);
-
-DROP TABLE cart_item;
-
-CREATE TABLE cart_item (
-	cart_item_id	NUMBER		NOT NULL,
-	pro_id	varchar2(50)		NOT NULL,
-	cart_id	NUMBER		NOT NULL,
-	quantity	NUMBER		NULL
-);
-
-DROP TABLE supplies;
-
-CREATE TABLE supplies (
-	sup_id	varchar2(50)		NOT NULL,
-	cate_id	number		NOT NULL,
-	sup_name	varchar2(50)		NULL,
-	sup_price	number		NULL,
-	sup_quan	number		NULL,
-	sup_brand	varchar2(50)		NULL
-);
-
-DROP TABLE membership;
-
-CREATE TABLE membership (
-	grade	varchar2(50)		NOT NULL,
-	mem_disc	varchar2(10)		NULL
-);
-
-DROP TABLE bk_cate;
 
 CREATE TABLE bk_cate (
-	cate_id	number		NOT NULL,
-	cate	varchar2(50)		NULL
+                         cate_id NUMBER PRIMARY KEY,
+                         cate VARCHAR2(50)
 );
 
-ALTER TABLE sup_cate ADD CONSTRAINT PK_SUP_CATE PRIMARY KEY (
-	cate_id
+CREATE TABLE book (
+                      bk_id VARCHAR2(50) PRIMARY KEY,
+                      cate_id NUMBER NOT NULL,
+                      bk_name VARCHAR2(50) NOT NULL,
+                      bk_price NUMBER NOT NULL,
+                      bk_quantity NUMBER NOT NULL,
+                      bk_author VARCHAR2(50) NOT NULL,
+                      bk_pub VARCHAR2(50) NOT NULL,
+                      bk_published VARCHAR2(50) NOT NULL,
+                      FOREIGN KEY (cate_id) REFERENCES bk_cate(cate_id)
+);
+
+CREATE TABLE sup_cate (
+                          cate_id NUMBER PRIMARY KEY,
+                          cate VARCHAR2(50)
+);
+
+CREATE TABLE supplies (
+                          sup_id VARCHAR2(50) PRIMARY KEY,
+                          cate_id NUMBER NOT NULL,
+                          sup_name VARCHAR2(50),
+                          sup_price NUMBER,
+                          sup_quan NUMBER,
+                          sup_brand VARCHAR2(50),
+                          FOREIGN KEY (cate_id) REFERENCES sup_cate(cate_id)
+);
+
+CREATE TABLE product (
+                         pro_id VARCHAR2(50) PRIMARY KEY,
+                         sup_id VARCHAR2(50),
+                         bk_id VARCHAR2(50),
+                         pro_grade NUMBER(5,2),
+                         FOREIGN KEY (sup_id) REFERENCES supplies(sup_id),
+                         FOREIGN KEY (bk_id) REFERENCES book(bk_id)
+);
+
+CREATE TABLE cart (
+                      cart_id NUMBER PRIMARY KEY,
+                      u_id VARCHAR2(50) NOT NULL,
+                      FOREIGN KEY (u_id) REFERENCES user_info(u_id)
+);
+
+CREATE TABLE cart_item (
+                           cart_item_id NUMBER PRIMARY KEY,
+                           pro_id VARCHAR2(50) NOT NULL,
+                           cart_id NUMBER NOT NULL,
+                           quantity NUMBER,
+                           FOREIGN KEY (pro_id) REFERENCES product(pro_id),
+                           FOREIGN KEY (cart_id) REFERENCES cart(cart_id)
+);
+
+CREATE TABLE orders (
+                        order_id NUMBER PRIMARY KEY,
+                        u_id VARCHAR2(50) NOT NULL,
+                        order_status VARCHAR2(50),
+                        total_amount NUMBER,
+                        FOREIGN KEY (u_id) REFERENCES user_info(u_id)
+);
+
+CREATE TABLE order_item (
+                            order_item_id NUMBER PRIMARY KEY,
+                            order_id NUMBER NOT NULL,
+                            pro_id VARCHAR2(50) NOT NULL,
+                            quantity NUMBER,
+                            unit_price NUMBER,
+                            FOREIGN KEY (order_id) REFERENCES orders(order_id),
+                            FOREIGN KEY (pro_id) REFERENCES product(pro_id)
+);
+
+CREATE TABLE payment (
+                         payment_id NUMBER PRIMARY KEY,
+                         order_id NUMBER NOT NULL,
+                         payment_method VARCHAR2(50) NOT NULL,
+                         payment_amount NUMBER NOT NULL,
+                         payment_date DATE DEFAULT SYSDATE,
+                         FOREIGN KEY (order_id) REFERENCES orders(order_id)
+);
+
+CREATE TABLE review_comment (
+                                cmt_id	varchar2(50)		NOT NULL,
+                                u_id	varchar2(50)		NOT NULL,
+                                re_num	number		NOT NULL,
+                                cmt_body	varchar2(255)		NULL,
+                                cmt_date	date		NULL
+);
+
+CREATE TABLE review (
+                        re_num	number		NOT NULL,
+                        pro_id	varchar2(50)		NOT NULL,
+                        u_id	varchar2(50)		NOT NULL,
+                        re_title	varchar2(50)		NULL,
+                        re_body	varchar2(255)		NULL,
+                        re_grade	number(5)		NULL,
+                        re_date	date		NULL
 );
 
 ALTER TABLE review_comment ADD CONSTRAINT PK_REVIEW_COMMENT PRIMARY KEY (
-	cmt_id
-);
-
-ALTER TABLE book ADD CONSTRAINT PK_BOOK PRIMARY KEY (
-	bk_id
-);
-
-ALTER TABLE order_item ADD CONSTRAINT PK_ORDER_ITEM PRIMARY KEY (
-	order_item_id
-);
-
-ALTER TABLE cart ADD CONSTRAINT PK_CART PRIMARY KEY (
-	cart_id
-);
-
-ALTER TABLE user_info ADD CONSTRAINT PK_USER_INFO PRIMARY KEY (
-	u_id
-);
-
-ALTER TABLE product ADD CONSTRAINT PK_PRODUCT PRIMARY KEY (
-	pro_id
-);
-
-ALTER TABLE orders ADD CONSTRAINT PK_ORDERS PRIMARY KEY (
-	order_id
-);
+                                                                         cmt_id
+    );
 
 ALTER TABLE review ADD CONSTRAINT PK_REVIEW PRIMARY KEY (
-	re_num
-);
-
-ALTER TABLE cart_item ADD CONSTRAINT PK_CART_ITEM PRIMARY KEY (
-	cart_item_id
-);
-
-ALTER TABLE supplies ADD CONSTRAINT PK_SUPPLIES PRIMARY KEY (
-	sup_id
-);
-
-ALTER TABLE membership ADD CONSTRAINT PK_MEMBERSHIP PRIMARY KEY (
-	grade
-);
-
-ALTER TABLE bk_cate ADD CONSTRAINT PK_BK_CATE PRIMARY KEY (
-	cate_id
-);
+                                                         re_num
+    );
 
 ALTER TABLE review_comment ADD CONSTRAINT FK_user_info_TO_review_comment_1 FOREIGN KEY (
-	u_id
-)
-REFERENCES user_info (
-	u_id
-);
+                                                                                        u_id
+    )
+    REFERENCES user_info (
+                          u_id
+        );
 
 ALTER TABLE review_comment ADD CONSTRAINT FK_review_TO_review_comment_1 FOREIGN KEY (
-	re_num
-)
-REFERENCES review (
-	re_num
-);
-
-ALTER TABLE book ADD CONSTRAINT FK_bk_cate_TO_book_1 FOREIGN KEY (
-	cate_id
-)
-REFERENCES bk_cate (
-	cate_id
-);
-
-ALTER TABLE order_item ADD CONSTRAINT FK_cart_item_TO_order_item_1 FOREIGN KEY (
-	cart_item_id
-)
-REFERENCES cart_item (
-	cart_item_id
-);
-
-ALTER TABLE order_item ADD CONSTRAINT FK_orders_TO_order_item_1 FOREIGN KEY (
-	order_id
-)
-REFERENCES orders (
-	order_id
-);
-
-ALTER TABLE cart ADD CONSTRAINT FK_user_info_TO_cart_1 FOREIGN KEY (
-	u_id
-)
-REFERENCES user_info (
-	u_id
-);
-
-ALTER TABLE user_info ADD CONSTRAINT FK_membership_TO_user_info_1 FOREIGN KEY (
-	grade
-)
-REFERENCES membership (
-	grade
-);
-
-ALTER TABLE product ADD CONSTRAINT FK_supplies_TO_product_1 FOREIGN KEY (
-	sup_id
-)
-REFERENCES supplies (
-	sup_id
-);
-
-ALTER TABLE product ADD CONSTRAINT FK_book_TO_product_1 FOREIGN KEY (
-	bk_id
-)
-REFERENCES book (
-	bk_id
-);
-
-ALTER TABLE orders ADD CONSTRAINT FK_user_info_TO_orders_1 FOREIGN KEY (
-	u_id
-)
-REFERENCES user_info (
-	u_id
-);
+                                                                                     re_num
+    )
+    REFERENCES review (
+                       re_num
+        );
 
 ALTER TABLE review ADD CONSTRAINT FK_product_TO_review_1 FOREIGN KEY (
-	pro_id
-)
-REFERENCES product (
-	pro_id
-);
+                                                                      pro_id
+    )
+    REFERENCES product (
+                        pro_id
+        );
 
 ALTER TABLE review ADD CONSTRAINT FK_user_info_TO_review_1 FOREIGN KEY (
-	u_id
-)
-REFERENCES user_info (
-	u_id
-);
+                                                                        u_id
+    )
+    REFERENCES user_info (
+                          u_id
+        );
 
-ALTER TABLE cart_item ADD CONSTRAINT FK_product_TO_cart_item_1 FOREIGN KEY (
-	pro_id
-)
-REFERENCES product (
-	pro_id
-);
+-- 트리거 생성
+CREATE OR REPLACE TRIGGER trg_after_insert_book
+    AFTER INSERT ON book
+    FOR EACH ROW
+BEGIN
+    INSERT INTO product (pro_id, bk_id, sup_id, pro_grade)
+    VALUES ('BK_' || UPPER(:NEW.bk_id), :NEW.bk_id, NULL, NULL);
+END;
+/
 
-ALTER TABLE cart_item ADD CONSTRAINT FK_cart_TO_cart_item_1 FOREIGN KEY (
-	cart_id
-)
-REFERENCES cart (
-	cart_id
-);
+CREATE OR REPLACE TRIGGER trg_after_insert_supplies
+    AFTER INSERT ON supplies
+    FOR EACH ROW
+BEGIN
+    INSERT INTO product (pro_id, sup_id, bk_id, pro_grade)
+    VALUES ('SUP_' || UPPER(:NEW.sup_id), :NEW.sup_id, NULL, NULL);
+END;
+/
 
-ALTER TABLE supplies ADD CONSTRAINT FK_sup_cate_TO_supplies_1 FOREIGN KEY (
-	cate_id
-)
-REFERENCES sup_cate (
-	cate_id
-);
+CREATE OR REPLACE TRIGGER trg_after_insert_order_item
+    AFTER INSERT ON order_item
+    FOR EACH ROW
+DECLARE
+    v_sup_id VARCHAR2(50);
+    v_bk_id VARCHAR2(50);
+BEGIN
+    SELECT sup_id, bk_id INTO v_sup_id, v_bk_id
+    FROM product
+    WHERE pro_id = :NEW.pro_id;
 
-ALTER TABLE orders DROP COLUMN quantity;
-ALTER TABLE order_item DROP CONSTRAINT FK_cart_item_TO_order_item_1;
-ALTER TABLE order_item ADD CONSTRAINT FK_cart_item_TO_order_item FOREIGN KEY (cart_item_id) REFERENCES cart_item(cart_item_id) ON DELETE CASCADE;
+    IF v_sup_id IS NOT NULL THEN
+        UPDATE supplies
+        SET sup_quan = sup_quan - :NEW.quantity
+        WHERE sup_id = v_sup_id;
+    ELSIF v_bk_id IS NOT NULL THEN
+        UPDATE book
+        SET bk_quantity = bk_quantity - :NEW.quantity
+        WHERE bk_id = v_bk_id;
+    END IF;
+END;
+/
+
+-- 프로시저 생성
+CREATE OR REPLACE PROCEDURE apply_discount (
+    p_order_id IN NUMBER,
+    p_user_id IN VARCHAR2
+) AS
+    v_discount_rate NUMBER := 0;
+    v_total_amount NUMBER := 0;
+    v_mem_disc VARCHAR2(10);
+BEGIN
+    BEGIN
+        SELECT mem_disc INTO v_mem_disc
+        FROM membership m
+                 JOIN user_info u ON m.grade = u.grade
+        WHERE u.u_id = p_user_id;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            v_mem_disc := '0%';
+    END;
+
+    BEGIN
+        v_discount_rate := TO_NUMBER(REPLACE(v_mem_disc, '%', '')) / 100;
+    EXCEPTION
+        WHEN VALUE_ERROR THEN
+            v_discount_rate := 0;
+    END;
+
+    SELECT SUM(unit_price * quantity) INTO v_total_amount
+    FROM order_item
+    WHERE order_id = p_order_id;
+
+    UPDATE orders
+    SET total_amount = NVL(v_total_amount, 0) * (1 - NVL(v_discount_rate, 0))
+    WHERE order_id = p_order_id;
+
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE;
+END;
+/
+
+-------------------------------------
+-- 뷰(VIEW) 생성
+-------------------------------------
+
+-- 1. 일별 매출 뷰
+CREATE OR REPLACE VIEW daily_sales AS
+SELECT
+    TRUNC(payment_date) AS sales_date,
+    SUM(payment_amount) AS daily_sales_amount,
+    COUNT(DISTINCT order_id) AS order_count
+FROM payment
+GROUP BY TRUNC(payment_date)
+ORDER BY sales_date DESC;
+
+-- 2. 베스트셀러 상품 뷰
+CREATE OR REPLACE VIEW bestseller AS
+SELECT
+    p.pro_id,
+    CASE
+        WHEN p.pro_id LIKE 'BK%' THEN b.bk_name
+        WHEN p.pro_id LIKE 'SUP%' THEN s.sup_name
+        END AS product_name,
+    SUM(oi.quantity) AS total_quantity,
+    SUM(oi.unit_price * oi.quantity) AS total_sales_amount,
+    RANK() OVER (ORDER BY SUM(oi.quantity) DESC) AS sales_rank
+FROM order_item oi
+         JOIN product p ON oi.pro_id = p.pro_id
+         LEFT JOIN book b ON p.bk_id = b.bk_id
+         LEFT JOIN supplies s ON p.sup_id = s.sup_id
+GROUP BY p.pro_id,
+         CASE
+             WHEN p.pro_id LIKE 'BK%' THEN b.bk_name
+             WHEN p.pro_id LIKE 'SUP%' THEN s.sup_name
+             END;
+
+-- 3. 회원 구매 분석 뷰
+CREATE OR REPLACE VIEW member_purchase_analysis AS
+SELECT
+    u.u_id,
+    u.u_name,
+    m.grade,
+    m.mem_disc,
+    COUNT(DISTINCT o.order_id) AS total_orders,
+    SUM(p.payment_amount) AS total_spent,
+    ROUND(SUM(p.payment_amount) / COUNT(DISTINCT o.order_id), 2) AS avg_order_value
+FROM user_info u
+         JOIN membership m ON u.grade = m.grade
+         JOIN orders o ON u.u_id = o.u_id
+         JOIN payment p ON o.order_id = p.order_id
+GROUP BY u.u_id, u.u_name, m.grade, m.mem_disc
+ORDER BY total_spent DESC;
 
 commit;
