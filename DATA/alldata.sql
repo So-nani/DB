@@ -208,46 +208,54 @@ insert all
 select * from dual;
 --여기까지 문구
  
-
-insert into review values (1, 'BK_b5', 'A0001', '백년의 고독','생각보다 재미있었습니다',10,
-to_date('17-02-2025','dd-mm-yyyy'));
-insert into review values (2, 'BK_b5', 'A0002', '백년의 고독','소유하지 않는것에 대해 생각해보았습니다',9,
-to_date('17-02-2025','dd-mm-yyyy'));
-insert into review values (3, 'BK_b5', 'A0003', '백년의 고독','살면서 한번쯤 봐야하는 책',10,
-to_date('17-02-2025','dd-mm-yyyy'));
-insert into review values (4, 'BK_b5', 'A0004', '백년의 고독','법정스님이 생각하는 삶의 지혜에 대해 알게되었습니다',9,
-to_date('17-02-2025','dd-mm-yyyy'));
-insert into review values (5, 'BK_b5', 'A0005', '백년의 고독','너무 지루하고 재미가 없어요',4,
-to_date('18-02-2025','dd-mm-yyyy'));
-insert into review values (6, 'BK_b5', 'A0006', '백년의 고독','책을 읽을때 마다 마음이 안정됩니다',10,
-to_date('18-02-2025','dd-mm-yyyy'));
-insert into review values (7, 'BK_b7', 'A0007', '총균쇠','우리나라에도 노벨상 수상자가 나와서 기쁘네요',10,
-to_date('18-02-2025','dd-mm-yyyy'));
-insert into review values (8, 'BK_b9', 'A0008', '여행의 기술','흡입력 있는 내용, 문체가 신선합니다',9,
-to_date('18-02-2025','dd-mm-yyyy'));
-insert into review values (9, 'BK_b9', 'A0008', '여행의 기술','재밌게 읽긴 했는데 내용이 불편하네요',8,
-to_date('18-02-2025','dd-mm-yyyy'));
-insert into review values (10, 'BK_b11', 'A0009', '리액트 입문','굉장히 재밌게 읽었습니다',8,
-to_date('18-02-2025','dd-mm-yyyy'));
-insert into review values (11, 'BK_b14', 'A0010', '자바스크립트 완벽 가이드','재밌었어요',9,
-to_date('18-02-2025','dd-mm-yyyy'));
-insert into review values (12, 'BK_b15', 'A0011', 'C# 프로그래밍','시적 은유를 사용한 간결한 문체로 부담없이 읽을수 있었습니다',6,
-to_date('18-02-2025','dd-mm-yyyy'));
+insert into REVIEW
+values (1, 'BK_B5', 'A0001', '백년의 고독', '생각보다 재미있었습니다', 10,
+        to_date('17-02-2025', 'dd-mm-yyyy'));
+insert into review
+values (2, 'BK_B5', 'A0002', '백년의 고독', '소유하지 않는것에 대해 생각해보았습니다', 9,
+        to_date('17-02-2025', 'dd-mm-yyyy'));
+insert into review
+values (3, 'BK_B5', 'A0003', '백년의 고독', '살면서 한번쯤 봐야하는 책', 10,
+        to_date('17-02-2025', 'dd-mm-yyyy'));
+insert into review
+values (4, 'BK_B5', 'A0004', '백년의 고독', '법정스님이 생각하는 삶의 지혜에 대해 알게되었습니다', 9,
+        to_date('17-02-2025', 'dd-mm-yyyy'));
+insert into review
+values (5, 'BK_B5', 'A0005', '백년의 고독', '너무 지루하고 재미가 없어요', 4,
+        to_date('18-02-2025', 'dd-mm-yyyy'));
+insert into review
+values (6, 'BK_B5', 'A0006', '백년의 고독', '책을 읽을때 마다 마음이 안정됩니다', 10,
+        to_date('18-02-2025', 'dd-mm-yyyy'));
+insert into review
+values (7, 'BK_B7', 'A0007', '총균쇠', '우리나라에도 노벨상 수상자가 나와서 기쁘네요', 10,
+        to_date('18-02-2025', 'dd-mm-yyyy'));
+insert into review
+values (8, 'BK_B9', 'A0008', '여행의 기술', '흡입력 있는 내용, 문체가 신선합니다', 9,
+        to_date('18-02-2025', 'dd-mm-yyyy'));
+insert into review
+values (9, 'BK_B9', 'A0008', '여행의 기술', '재밌게 읽긴 했는데 내용이 불편하네요', 8,
+        to_date('18-02-2025', 'dd-mm-yyyy'));
+insert into review
+values (10, 'BK_B11', 'A0009', '리액트 입문', '굉장히 재밌게 읽었습니다', 8,
+        to_date('18-02-2025', 'dd-mm-yyyy'));
+insert into review
+values (11, 'BK_B14', 'A0010', '자바스크립트 완벽 가이드', '재밌었어요', 9,
+        to_date('18-02-2025', 'dd-mm-yyyy'));
+insert into review
+values (12, 'BK_B15', 'A0011', 'C# 프로그래밍', '시적 은유를 사용한 간결한 문체로 부담없이 읽을수 있었습니다', 6,
+        to_date('18-02-2025', 'dd-mm-yyyy'));
 commit;
 
-insert into review_comment values ('tifani', 'A0002', 1, '전 지루했어요',
-to_date('17-02-2025','dd-mm-yyyy'));
-insert into review_comment values ('rome', 'A0003', 1, '사람마다 느끼는게 다른듯',
-to_date('17-02-2025','dd-mm-yyyy'));
-insert into review_comment values ('dokyo', 'A0006', 7, '노벨평화상이후에 첫 수상자',
-to_date('18-02-2025','dd-mm-yyyy'));
-insert into review_comment values ('seoul', 'A0009', 9, '이게재밌다구요?',
-to_date('18-02-2025','dd-mm-yyyy'));
+insert into review_comment
+values ('tifani', 'A0002', 1, '전 지루했어요',
+        to_date('17-02-2025', 'dd-mm-yyyy'));
+insert into review_comment
+values ('rome', 'A0003', 1, '사람마다 느끼는게 다른듯',
+        to_date('17-02-2025', 'dd-mm-yyyy'));
+insert into review_comment
+values ('dokyo', 'A0006', 7, '노벨평화상이후에 첫 수상자',
+        to_date('18-02-2025', 'dd-mm-yyyy'));
+insert into review_comment
+values ('seoul', 'A0009', 9, '이게재밌다구요?',
+        to_date('18-02-2025', 'dd-mm-yyyy'));
 commit;
-
---여기까지 리뷰 및 댓글
-
---
---update review set re_grade = 1 where re_num = 1;
---delete from review where re_num = 1;
---select avg(re_grade) from review where pro_id = 'BK_b5';
